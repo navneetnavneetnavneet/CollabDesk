@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 //  Routes
 const authRoutes = require("./routes/auth.routes");
 const ErrorHandler = require("./utils/ErrorHandler");
+
+app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

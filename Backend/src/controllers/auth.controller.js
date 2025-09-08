@@ -4,6 +4,7 @@ const {
 const { validationResult } = require("express-validator");
 const ErrorHandler = require("../utils/ErrorHandler");
 const userModel = require("../models/user.model");
+const blacklistTokenModel = require("../models/blacklistToken.model");
 const { sendOTP } = require("../services/nodemailer.service");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -90,5 +91,50 @@ module.exports.registerUser = catchAsyncError(async (req, res, next) => {
   res.status(201).json({
     message: "User register successfully",
     user,
+  });
+});
+
+module.exports.loginUser = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { email, password } = req.body;
+
+  const user = await userModel.findOne({ email }).select("+password");
+
+  if (!user) {
+    return next(new ErrorHandler("Invalid email or password !", 401));
+  }
+
+  const isValidPassword = await user.comparePassword(password);
+
+  if (!isValidPassword) {
+    return next(new ErrorHandler("Invalid email or password !", 401));
+  }
+
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+
+  res.cookie("token", token);
+
+  res.status(200).json({
+    message: "User login successfully",
+    user,
+  });
+});
+
+module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
+  const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
+
+  res.clearCookie("token");
+
+  await blacklistTokenModel.create({ token });
+
+  res.status(200).json({
+    message: "User logout successfully",
   });
 });
