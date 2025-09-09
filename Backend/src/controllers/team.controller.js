@@ -175,3 +175,77 @@ module.exports.getMyTeams = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json(teams);
 });
+
+module.exports.deleteMemberFromTeam = catchAsyncError(
+  async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
+    }
+
+    const { teamId, userId } = req.params;
+
+    const team = await teamModel.findById(teamId);
+
+    if (!team) {
+      return next(new ErrorHandler("Team is not found !", 404));
+    }
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return next(new ErrorHandler("User is not found !", 404));
+    }
+
+    if (!team.members.includes(user._id)) {
+      return next(new ErrorHandler("User is not a member of this team !", 400));
+    }
+
+    const updatedTeam = await teamModel.findByIdAndUpdate(
+      teamId,
+      { $pull: { members: userId } },
+      { new: true }
+    );
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { $pull: { teams: teamId } },
+      { new: true }
+    );
+
+    res.status(204).json({
+      message: "User removed successfully from team",
+      team: updatedTeam,
+      user: updatedUser,
+    });
+  }
+);
+
+module.exports.deleteTeam = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { teamId } = req.params;
+
+  const team = await teamModel.findById(teamId);
+
+  if (!team) {
+    return next(new ErrorHandler("Team is not found !", 404));
+  }
+
+  await userModel.updateMany(
+    { _id: { $in: team.members } },
+    { $pull: { teams: teamId } }
+  );
+
+  await teamModel.deleteOne({ _id: teamId });
+
+  res.status(200).json({
+    message: "Team is successfully delete",
+    user,
+  });
+});

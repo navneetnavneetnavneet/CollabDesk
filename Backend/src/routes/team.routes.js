@@ -39,4 +39,23 @@ router.get(
 
 router.get("/my", authUser.isAuthenticated, teamController.getMyTeams);
 
+router.delete(
+  "/:teamId/delete/:userId",
+  authUser.isAuthenticated,
+  authUser.checkRole("admin"),
+  [
+    param("teamId").isMongoId().withMessage("Invalid teamId !"),
+    param("userId").isMongoId().withMessage("Invalid userId !"),
+  ],
+  teamController.deleteMemberFromTeam
+);
+
+router.delete(
+  "/delete/:teamId",
+  authUser.isAuthenticated,
+  authUser.checkRole("admin"),
+  param("teamId").isMongoId().withMessage("Invalid teamId !"),
+  teamController.deleteTeam
+);
+
 module.exports = router;
