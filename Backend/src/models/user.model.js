@@ -57,6 +57,7 @@ const userSchema = new mongoose.Schema(
     otpExpiration: {
       type: String,
     },
+    teams: [{ type: mongoose.Schema.Types.ObjectId, ref: "team" }],
   },
   { timestamps: true }
 );

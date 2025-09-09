@@ -29,3 +29,19 @@ module.exports.isAuthenticated = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Unauthorized User !", 401));
   }
 });
+
+module.exports.checkRole = function () {
+  let allowedRoles = Array.prototype.slice.call(arguments);
+
+  return catchAsyncError((req, res, next) => {
+    if (!req.user) {
+      return next(new ErrorHandler("Unauthorized user !", 401));
+    }
+
+    if (allowedRoles.indexOf(req.user.role) === -1) {
+      return next(new ErrorHandler("Forbidden: You don’t have access !", 403));
+    }
+
+    next();
+  });
+};

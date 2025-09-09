@@ -2,10 +2,11 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const ErrorHandler = require("./utils/ErrorHandler");
 
 //  Routes
 const authRoutes = require("./routes/auth.routes");
-const ErrorHandler = require("./utils/ErrorHandler");
+const teamRoutes = require("./routes/team.routes");
 
 app.use(cookieParser());
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/team", teamRoutes);
 
 // error handling
 app.all("*name", (req, res, next) => {

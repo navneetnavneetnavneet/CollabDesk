@@ -5,7 +5,7 @@ const { validationResult } = require("express-validator");
 const ErrorHandler = require("../utils/ErrorHandler");
 const userModel = require("../models/user.model");
 const blacklistTokenModel = require("../models/blacklistToken.model");
-const { sendOTP } = require("../services/nodemailer.service");
+const { sendEmail } = require("../services/nodemailer.service");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -36,7 +36,7 @@ module.exports.verifyEmail = catchAsyncError(async (req, res, next) => {
   );
 
   try {
-    sendOTP(email, "Your OTP Code", `Your OTP Code is ${otp}`);
+    sendEmail(email, "Your OTP Code", `Your OTP Code is ${otp}`);
     res.status(200).json({ message: "OTP sent successfully", otp });
   } catch (error) {
     return next(new ErrorHandler("Email sending error !", 500));
