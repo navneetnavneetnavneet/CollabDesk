@@ -58,4 +58,11 @@ router.delete(
   teamController.deleteTeam
 );
 
+router.get(
+  "/:teamId/leave",
+  authUser.isAuthenticated,
+  param("teamId").isMongoId().withMessage("Invalid teamId !"),
+  teamController.leaveTeam
+);
+
 module.exports = router;

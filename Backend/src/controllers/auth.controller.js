@@ -8,6 +8,7 @@ const blacklistTokenModel = require("../models/blacklistToken.model");
 const { sendEmail } = require("../services/nodemailer.service");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const config = require("../config/config");
 
 module.exports.verifyEmail = catchAsyncError(async (req, res, next) => {
   const errors = validationResult(req);
@@ -80,8 +81,8 @@ module.exports.registerUser = catchAsyncError(async (req, res, next) => {
   user.otp = null;
   user.otpExpiration = null;
 
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+  const token = jwt.sign({ _id: user._id }, config.JWT_SECRET, {
+    expiresIn: config.JWT_EXPIRE,
   });
 
   res.cookie("token", token);

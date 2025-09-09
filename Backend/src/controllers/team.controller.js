@@ -249,3 +249,52 @@ module.exports.deleteTeam = catchAsyncError(async (req, res, next) => {
     user,
   });
 });
+
+module.exports.leaveTeam = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { teamId } = req.params;
+  const userId = req.user._id;
+
+  const team = await teamModel.findById(teamId);
+
+  if (!team) {
+    return next(new ErrorHandler("Team is not found !", 404));
+  }
+
+  if (!team.members.includes(userId)) {
+    return next(new ErrorHandler("You are not a member of this team !", 400));
+  }
+
+  const updatedTeam = await teamModel.findByIdAndUpdate(
+    teamId,
+    { $pull: { members: userId } },
+    { new: true }
+  );
+
+  const updatedUser = await userModel.findByIdAndUpdate(
+    userId,
+    { $pull: { teams: teamId } },
+    { new: true }
+  );
+
+  if (updatedTeam.members.length === 0) {
+    await teamModel.deleteOne({ _id: teamId });
+
+    return res.status(200).json({
+      message:
+        "You left the team. Since no members remained, the team was deleted.",
+      user: updatedUser,
+    });
+  }
+
+  res.status(200).json({
+    message: "You have successfully left the team",
+    user: updatedUser,
+    team: updatedTeam,
+  });
+});
