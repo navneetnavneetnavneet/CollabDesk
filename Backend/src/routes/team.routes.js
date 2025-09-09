@@ -30,4 +30,13 @@ router.post(
   teamController.joinTeam
 );
 
+router.get(
+  "/details/:teamId",
+  param("teamId").isMongoId().withMessage("Invalid teamId !"),
+  authUser.isAuthenticated,
+  teamController.getTeamDetails
+);
+
+router.get("/my", authUser.isAuthenticated, teamController.getMyTeams);
+
 module.exports = router;

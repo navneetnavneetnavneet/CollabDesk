@@ -147,3 +147,31 @@ module.exports.joinTeam = catchAsyncError(async (req, res, next) => {
     team,
   });
 });
+
+module.exports.getTeamDetails = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { teamId } = req.params;
+
+  const team = await teamModel.findById(teamId);
+
+  if (!team) {
+    return next(new ErrorHandler("Team is not found !", 404));
+  }
+
+  res.status(200).json(team);
+});
+
+module.exports.getMyTeams = catchAsyncError(async (req, res, next) => {
+  const teams = await teamModel
+    .find({
+      members: { $eq: { _id: req.user._id } },
+    })
+    .populate("members");
+
+  res.status(200).json(teams);
+});
