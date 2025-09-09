@@ -138,3 +138,8 @@ module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
     message: "User logout successfully",
   });
 });
+
+module.exports.loggedInUser = catchAsyncError(async (req, res, next) => {
+  const user = await userModel.findById(req.user._id);
+  res.status(200).json(user);
+});
