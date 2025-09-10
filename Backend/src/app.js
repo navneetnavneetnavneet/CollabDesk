@@ -7,6 +7,7 @@ const ErrorHandler = require("./utils/ErrorHandler");
 //  Routes
 const authRoutes = require("./routes/auth.routes");
 const teamRoutes = require("./routes/team.routes");
+const projectRoutes = require("./routes/project.routes");
 
 app.use(cookieParser());
 
@@ -17,6 +18,7 @@ app.use(morgan("dev"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/team", teamRoutes);
+app.use("/api/project", projectRoutes);
 
 // error handling
 app.all("*name", (req, res, next) => {

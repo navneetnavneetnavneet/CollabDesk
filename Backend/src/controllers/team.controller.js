@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const {
   catchAsyncError,
 } = require("../middlewares/catchAsyncError.middleware");
-const teamModel = require("../models/team.model.");
+const teamModel = require("../models/team.model");
 const userModel = require("../models/user.model");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { v4: uuidv4 } = require("uuid");
