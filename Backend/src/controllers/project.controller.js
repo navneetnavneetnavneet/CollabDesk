@@ -2,9 +2,9 @@ const {
   catchAsyncError,
 } = require("../middlewares/catchAsyncError.middleware");
 const { validationResult } = require("express-validator");
-const teamModel = require("../models/team.model");
 const ErrorHandler = require("../utils/ErrorHandler");
 const projectModel = require("../models/project.model");
+const teamModel = require("../models/team.model");
 const userModel = require("../models/user.model");
 
 module.exports.createProject = catchAsyncError(async (req, res, next) => {
@@ -231,5 +231,34 @@ module.exports.updateProject = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     message: "Project updated successfully",
     project: updatedProject,
+  });
+});
+
+module.exports.deleteProject = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { projectId } = req.params;
+
+  const project = await projectModel.findById(projectId);
+
+  if (!project) {
+    return next(new ErrorHandler("Project is not found !", 404));
+  }
+
+  if (project.team && project.team.length > 0) {
+    await teamModel.updateMany(
+      { _id: { $in: project.team } },
+      { $pull: { projects: projectId } }
+    );
+  }
+
+  await projectModel.deleteOne({ _id: projectId });
+
+  res.status(200).json({
+    message: "Project deleted successfully",
   });
 });

@@ -85,4 +85,12 @@ router.put(
   projectController.updateProject
 );
 
+router.delete(
+  "/delete/:projectId",
+  authUser.isAuthenticated,
+  authUser.checkRole("admin", "manager"),
+  param("projectId").isMongoId().withMessage("Invalid projectId !"),
+  projectController.deleteProject
+);
+
 module.exports = router;
