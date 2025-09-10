@@ -65,13 +65,11 @@ module.exports.getProjectsByTeam = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Team is not found !", 404));
   }
 
-  const user = req.user._id;
+  const user = req.user;
 
-  const isMember = team.members.some(
-    (memberId) => memberId.toString() === user._id.toString()
-  );
+  const isTeamMember = team.members.includes(user._id);
 
-  if (user.role !== "admin" && user.role !== "manager" && !isMember) {
+  if (user.role !== "admin" && user.role !== "manager" && !isTeamMember) {
     return next(new ErrorHandler("Access denied !", 403));
   }
 
@@ -103,6 +101,19 @@ module.exports.getProjectDetails = catchAsyncError(async (req, res, next) => {
 
   if (!project) {
     return next(new ErrorHandler("Project is not found !", 404));
+  }
+
+  const isTeamMember = project.team.members.includes(user._id);
+
+  const isProjectMember = project.members.includes(user._id);
+
+  if (
+    user.role !== "admin" &&
+    user.role !== "manager" &&
+    !isTeamMember &&
+    !isProjectMember
+  ) {
+    return next(new ErrorHandler("Access denied !", 403));
   }
 
   res.status(200).json(project);
