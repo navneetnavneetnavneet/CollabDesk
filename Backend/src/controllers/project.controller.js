@@ -41,6 +41,9 @@ module.exports.createProject = catchAsyncError(async (req, res, next) => {
     createdBy: req.user._id,
   });
 
+  isTeam.projects.push(project._id);
+  await isTeam.save();
+
   res.status(201).json({
     message: "Create project successfully",
     project,
@@ -51,7 +54,7 @@ module.exports.getProjectsByTeam = catchAsyncError(async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return next(new ErrorHandler("", 400));
+    return res.status(400).json({ message: errors.array() });
   }
 
   const { teamId } = req.params;
@@ -80,4 +83,27 @@ module.exports.getProjectsByTeam = catchAsyncError(async (req, res, next) => {
   });
 
   res.status(200).json(projects);
+});
+
+module.exports.getProjectDetails = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { projectId } = req.params;
+
+  const project = await projectModel
+    .findById(projectId)
+    .populate("createdBy")
+    .populate("team")
+    .populate("members")
+    .populate("tasks");
+
+  if (!project) {
+    return next(new ErrorHandler("Project is not found !", 404));
+  }
+
+  res.status(200).json(project);
 });

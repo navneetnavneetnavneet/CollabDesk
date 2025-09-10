@@ -171,7 +171,8 @@ module.exports.getMyTeams = catchAsyncError(async (req, res, next) => {
     .find({
       members: { $eq: { _id: req.user._id } },
     })
-    .populate("members");
+    .populate("members")
+    .populate("projects");
 
   res.status(200).json(teams);
 });

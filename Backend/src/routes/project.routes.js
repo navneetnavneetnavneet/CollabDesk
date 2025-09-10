@@ -31,4 +31,11 @@ router.get(
   projectController.getProjectsByTeam
 );
 
+router.get(
+  "/details/:projectId",
+  authUser.isAuthenticated,
+  param("projectId").isMongoId().withMessage("Invalid projectId !"),
+  projectController.getProjectDetails
+);
+
 module.exports = router;
