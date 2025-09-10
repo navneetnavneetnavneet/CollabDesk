@@ -201,3 +201,35 @@ module.exports.deleteMemberFromProject = catchAsyncError(
     });
   }
 );
+
+module.exports.updateProject = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { projectId } = req.params;
+  const { name, description, status, deadline } = req.body;
+
+  const updateData = {};
+  if (name !== undefined) updateData.name = name;
+  if (description !== undefined) updateData.description = description;
+  if (status !== undefined) updateData.status = status;
+  if (deadline !== undefined) updateData.deadline = deadline;
+
+  const updatedProject = await projectModel.findByIdAndUpdate(
+    projectId,
+    updateData,
+    { new: true, runValidators: true }
+  );
+
+  if (!updatedProject) {
+    return next(new ErrorHandler("Project is not found!", 404));
+  }
+
+  res.status(200).json({
+    message: "Project updated successfully",
+    project: updatedProject,
+  });
+});

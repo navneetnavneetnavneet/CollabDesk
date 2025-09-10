@@ -60,4 +60,29 @@ router.delete(
   projectController.deleteMemberFromProject
 );
 
+router.put(
+  "/update/:projectId",
+  authUser.isAuthenticated,
+  authUser.checkRole("admin", "manager"),
+  [
+    param("projectId").isMongoId().withMessage("Invalid projectId !"),
+    body("name")
+      .optional()
+      .notEmpty()
+      .withMessage("Project name cannot be empty"),
+    body("description")
+      .optional()
+      .notEmpty()
+      .withMessage("Project description cannot be empty"),
+    body("status")
+      .optional()
+      .isIn(["not-started", "in-progress", "completed", "on-hold"])
+      .withMessage(
+        "Status must be one of (not-started, in-progress, completed, on-hold)"
+      ),
+    body("deadline").notEmpty().withMessage("Project deadline is required !"),
+  ],
+  projectController.updateProject
+);
+
 module.exports = router;
