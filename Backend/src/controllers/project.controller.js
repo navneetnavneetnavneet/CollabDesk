@@ -58,14 +58,13 @@ module.exports.getProjectsByTeam = catchAsyncError(async (req, res, next) => {
   }
 
   const { teamId } = req.params;
+  const user = req.user;
 
   const team = await teamModel.findById(teamId);
 
   if (!team) {
     return next(new ErrorHandler("Team is not found !", 404));
   }
-
-  const user = req.user;
 
   const isTeamMember = team.members.includes(user._id);
 
@@ -91,6 +90,7 @@ module.exports.getProjectDetails = catchAsyncError(async (req, res, next) => {
   }
 
   const { projectId } = req.params;
+  const user = req.user;
 
   const project = await projectModel
     .findById(projectId)
