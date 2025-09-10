@@ -5,6 +5,7 @@ const { validationResult } = require("express-validator");
 const teamModel = require("../models/team.model");
 const ErrorHandler = require("../utils/ErrorHandler");
 const projectModel = require("../models/project.model");
+const userModel = require("../models/user.model");
 
 module.exports.createProject = catchAsyncError(async (req, res, next) => {
   const errors = validationResult(req);
@@ -97,7 +98,7 @@ module.exports.getProjectDetails = catchAsyncError(async (req, res, next) => {
     .populate("createdBy")
     .populate("team")
     .populate("members")
-    .populate("tasks");
+    // .populate("tasks");
 
   if (!project) {
     return next(new ErrorHandler("Project is not found !", 404));
@@ -117,4 +118,43 @@ module.exports.getProjectDetails = catchAsyncError(async (req, res, next) => {
   }
 
   res.status(200).json(project);
+});
+
+module.exports.addMemberToProject = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { projectId } = req.params;
+  const { userId } = req.body;
+
+  const project = await projectModel.findById(projectId).populate("team");
+
+  if (!project) {
+    return next(new ErrorHandler("Project is not found !", 404));
+  }
+
+  const user = await userModel.findById(userId);
+
+  if (!user) {
+    return next(new ErrorHandler("User is not found !", 404));
+  }
+
+  if (!project.team.members.includes(user._id)) {
+    return next(new ErrorHandler("User is not a part of the team !", 400));
+  }
+
+  if (project.members.includes(user._id)) {
+    return next(new ErrorHandler("User already in project !", 400));
+  }
+
+  project.members.push(user._id);
+  await project.save();
+
+  res.status(200).json({
+    message: "Member added to project",
+    project,
+  });
 });

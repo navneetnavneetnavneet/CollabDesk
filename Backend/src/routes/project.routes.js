@@ -38,4 +38,15 @@ router.get(
   projectController.getProjectDetails
 );
 
+router.post(
+  "/:projectId/add-member",
+  authUser.isAuthenticated,
+  authUser.checkRole("admin"),
+  param("projectId").isMongoId().withMessage("Invalid projectId !"),
+  body("userId").isMongoId().withMessage("Invalid userId !"),
+  projectController.addMemberToProject
+);
+
+// DELETE /:projectId/remove-member/:userId
+
 module.exports = router;
