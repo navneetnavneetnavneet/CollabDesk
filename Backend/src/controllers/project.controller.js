@@ -97,8 +97,8 @@ module.exports.getProjectDetails = catchAsyncError(async (req, res, next) => {
     .findById(projectId)
     .populate("createdBy")
     .populate("team")
-    .populate("members")
-    // .populate("tasks");
+    .populate("members");
+  // .populate("tasks");
 
   if (!project) {
     return next(new ErrorHandler("Project is not found !", 404));
@@ -158,3 +158,46 @@ module.exports.addMemberToProject = catchAsyncError(async (req, res, next) => {
     project,
   });
 });
+
+module.exports.deleteMemberFromProject = catchAsyncError(
+  async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
+    }
+
+    const { projectId, userId } = req.params;
+
+    const project = await projectModel.findById(projectId).populate("team");
+
+    if (!project) {
+      return next(new ErrorHandler("Project is not found !", 404));
+    }
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return next(new ErrorHandler("User is not found !", 404));
+    }
+
+    if (!project.members.includes(user._id)) {
+      return next(
+        new ErrorHandler("User is not a member of this project !", 400)
+      );
+    }
+
+    const updatedProject = await projectModel
+      .findByIdAndUpdate(
+        projectId,
+        { $pull: { members: userId } },
+        { new: true }
+      )
+      .populate("members");
+
+    res.status(200).json({
+      message: "Member removed from project",
+      project: updatedProject,
+    });
+  }
+);

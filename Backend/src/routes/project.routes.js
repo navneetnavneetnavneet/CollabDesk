@@ -41,12 +41,23 @@ router.get(
 router.post(
   "/:projectId/add-member",
   authUser.isAuthenticated,
-  authUser.checkRole("admin"),
-  param("projectId").isMongoId().withMessage("Invalid projectId !"),
-  body("userId").isMongoId().withMessage("Invalid userId !"),
+  authUser.checkRole("admin", "manager"),
+  [
+    param("projectId").isMongoId().withMessage("Invalid projectId !"),
+    body("userId").isMongoId().withMessage("Invalid userId !"),
+  ],
   projectController.addMemberToProject
 );
 
-// DELETE /:projectId/remove-member/:userId
+router.delete(
+  "/:projectId/remove-member/:userId",
+  authUser.isAuthenticated,
+  authUser.checkRole("admin", "manager"),
+  [
+    param("projectId").isMongoId().withMessage("Invalid projectId !"),
+    param("userId").isMongoId().withMessage("Invalid userId !"),
+  ],
+  projectController.deleteMemberFromProject
+);
 
 module.exports = router;
