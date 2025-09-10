@@ -24,4 +24,11 @@ router.post(
   projectController.createProject
 );
 
+router.get(
+  "/:teamId",
+  authUser.isAuthenticated,
+  param("teamId").isMongoId().withMessage("Invalid teamId !"),
+  projectController.getProjectsByTeam
+);
+
 module.exports = router;
