@@ -35,4 +35,12 @@ router.get(
   taskController.getProjectTasks
 );
 
+router.put(
+  "/update/:taskId",
+  authUser.isAuthenticated,
+  authUser.checkRole("admin", "manager"),
+  param("taskId").isMongoId().withMessage("Invalid taskId !"),
+  taskController.updateTask
+);
+
 module.exports = router;

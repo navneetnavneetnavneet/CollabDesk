@@ -93,3 +93,43 @@ module.exports.getProjectTasks = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json(project);
 });
+
+module.exports.updateTask = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { taskId } = req.params;
+  const { title, description, status, assignee, deadline, attachments } =
+    req.body;
+
+  const task = await taskModel.findById(taskId);
+
+  if (!task) {
+    return next(new ErrorHandler("Task is not found !", 404));
+  }
+
+  const updateData = {};
+  if (title !== undefined) updateData.title = title;
+  if (description !== undefined) updateData.description = description;
+  if (status !== undefined) updateData.status = status;
+  if (assignee !== undefined) updateData.assignee = assignee;
+  if (deadline !== undefined) updateData.deadline = deadline;
+  if (attachments !== undefined) updateData.attachments = attachments;
+
+  const updatedTask = await taskModel.findByIdAndUpdate(taskId, updateData, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!updatedTask) {
+    return next(new ErrorHandler("Task not found!", 404));
+  }
+
+  res.status(200).json({
+    message: "Task updated successfully",
+    task: updatedTask,
+  });
+});
