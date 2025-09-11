@@ -133,3 +133,32 @@ module.exports.updateTask = catchAsyncError(async (req, res, next) => {
     task: updatedTask,
   });
 });
+
+module.exports.deleteTask = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { taskId } = req.params;
+
+  const task = await taskModel.findById(taskId);
+
+  if (!task) {
+    return next(new ErrorHandler("Task is not found !", 404));
+  }
+
+  if (task.project) {
+    await projectModel.updateMany(
+      { _id: { $in: task.project } },
+      { $pull: { tasks: taskId } }
+    );
+  }
+
+  await taskModel.deleteOne({ _id: taskId });
+
+  res.status(200).json({
+    message: "Task deleted successfully",
+  });
+});

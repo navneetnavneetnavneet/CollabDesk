@@ -249,7 +249,7 @@ module.exports.deleteProject = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Project is not found !", 404));
   }
 
-  if (project.team && project.team.length > 0) {
+  if (project.team) {
     await teamModel.updateMany(
       { _id: { $in: project.team } },
       { $pull: { projects: projectId } }

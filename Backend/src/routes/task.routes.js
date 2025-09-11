@@ -43,4 +43,12 @@ router.put(
   taskController.updateTask
 );
 
+router.delete(
+  "/delete/:taskId",
+  authUser.isAuthenticated,
+  authUser.checkRole("admin", "manager"),
+  param("taskId").isMongoId().withMessage("Invalid taskId !"),
+  taskController.deleteTask
+);
+
 module.exports = router;
