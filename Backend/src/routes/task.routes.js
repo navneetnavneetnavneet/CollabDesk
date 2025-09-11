@@ -28,4 +28,11 @@ router.get(
   taskController.getTaskDetails
 );
 
+router.get(
+  "/:projectId",
+  authUser.isAuthenticated,
+  param("projectId").isMongoId().withMessage("Invalid projectId !"),
+  taskController.getProjectTasks
+);
+
 module.exports = router;
