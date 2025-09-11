@@ -17,12 +17,19 @@ const taskSchema = new mongoose.Schema(
       enum: ["todo", "in-progress", "done"],
       default: "todo",
     },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
     assignee: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
     project: { type: mongoose.Schema.Types.ObjectId, ref: "project" },
     deadline: {
       type: Date,
     },
-    attachments: [],
+    attachments: [
+      {
+        fileName: String,
+        fileUrl: String,
+        fileType: String,
+      },
+    ],
   },
   { timestamps: true }
 );
