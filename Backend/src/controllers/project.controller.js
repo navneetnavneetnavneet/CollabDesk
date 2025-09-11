@@ -97,8 +97,8 @@ module.exports.getProjectDetails = catchAsyncError(async (req, res, next) => {
     .findById(projectId)
     .populate("createdBy")
     .populate("team")
-    .populate("members");
-  // .populate("tasks");
+    .populate("members")
+    .populate("tasks");
 
   if (!project) {
     return next(new ErrorHandler("Project is not found !", 404));

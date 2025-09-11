@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const authUser = require("../middlewares/auth.middleware");
 const taskController = require("../controllers/task.controller");
 
@@ -19,6 +19,13 @@ router.post(
     body("project").isMongoId().withMessage("Project Id is required !"),
   ],
   taskController.createTask
+);
+
+router.get(
+  "/details/:taskId",
+  authUser.isAuthenticated,
+  param("taskId").isMongoId().withMessage("Invalid taskId !"),
+  taskController.getTaskDetails
 );
 
 module.exports = router;
