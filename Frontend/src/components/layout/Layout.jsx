@@ -10,7 +10,7 @@ const Layout = () => {
 
       <DesktopSidebar />
 
-        <Outlet />
+      <Outlet />
     </div>
   );
 };
