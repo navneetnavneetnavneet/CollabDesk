@@ -17,8 +17,12 @@ const Login = () => {
           </p>
         </div>
         <form className="w-full flex flex-col gap-3">
-          <div className="flex flex-col">
-            <label className="text-sm" id="email" htmlFor="email">
+          <div className="flex flex-col gap-1">
+            <label
+              className="text-base font-normal opacity-80"
+              id="email"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -26,14 +30,17 @@ const Login = () => {
               name="email"
               type="email"
               placeholder="Enter Email"
-              className="w-full px-2 py-1 rounded-md outline-none border border-zinc-400"
+              className="w-full px-2 py-2 rounded-md outline-none border border-zinc-400"
             />
           </div>
-          <div className="flex flex-col">
-            <label className="text-sm" id="password" htmlFor="password">
+          <div className="flex flex-col gap-1">
+            <label
+              className="text-base font-normal opacity-80"
+              htmlFor="password"
+            >
               Password
             </label>
-            <div className="w-full flex items-center px-2 py-1 rounded-md outline-none border border-zinc-400">
+            <div className="w-full flex items-center px-2 py-2 rounded-md outline-none border border-zinc-400">
               <input
                 id="password"
                 name="password"
@@ -47,7 +54,7 @@ const Login = () => {
               ></i>
             </div>
           </div>
-          <button className="w-full flex items-center justify-center gap-1 px-2 py-1 rounded-md text-white bg-blue-500 hover:bg-blue-600 duration-300 cursor-pointer">
+          <button className="w-full flex items-center justify-center gap-1 mt-3 px-2 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600 duration-300 cursor-pointer">
             Login
           </button>
         </form>

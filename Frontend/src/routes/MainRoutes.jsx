@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Layout from "../components/layout/Layout";
 import Projects from "../pages/Projects";
+import CreateNewProject from "../pages/CreateNewProject";
 
 const MainRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const MainRoutes = () => {
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/create-new-project" element={<CreateNewProject />} />
       </Route>
     </Routes>
   );
