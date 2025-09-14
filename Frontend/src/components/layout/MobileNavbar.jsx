@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MobileNavbar = () => {
+  const navigate = useNavigate();
   const [width, setWidth] = useState(0);
 
   return (
@@ -16,7 +17,10 @@ const MobileNavbar = () => {
             Collb<span className="text-red-500">Desk</span>
           </h1>
         </div>
-        <div className="w-10 h-10 rounded-full border border-zinc-800 overflow-hidden cursor-pointer"></div>
+        <div
+          onClick={() => navigate("/profile")}
+          className="w-10 h-10 rounded-full border border-zinc-800 overflow-hidden cursor-pointer"
+        ></div>
       </nav>
       <aside
         style={{ width: `${width}%` }}
