@@ -1,14 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const DesktopSidebar = () => {
+  const navigate = useNavigate();
   return (
     <aside className="relative w-72 h-full hidden sm:flex flex-col border-r border-zinc-800">
       <div className="w-full px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
         <h1 className="text-2xl font-medium tracking-tight leading-none">
           Collb<span className="text-red-500">Desk</span>
         </h1>
-        <div className="w-10 h-10 rounded-full border border-zinc-800 overflow-hidden cursor-pointer"></div>
+        <div
+          onClick={() => navigate("/profile")}
+          className="w-10 h-10 rounded-full border border-zinc-800 overflow-hidden cursor-pointer"
+        ></div>
       </div>
       <Link
         to="/projects"

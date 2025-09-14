@@ -7,6 +7,7 @@ import Layout from "../components/layout/Layout";
 import Projects from "../pages/Projects";
 import CreateNewProject from "../pages/CreateNewProject";
 import Profile from "../pages/Profile";
+import EditProfile from "../pages/EditProfile";
 
 const MainRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const MainRoutes = () => {
         <Route path="/projects" element={<Projects />} />
         <Route path="/create-new-project" element={<CreateNewProject />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
       </Route>
     </Routes>
   );

@@ -3,7 +3,7 @@ import React from "react";
 const CreateNewProject = () => {
   return (
     <div className="w-full h-full">
-      <div className="w-full md:w-2/3 mx-auto px-4 sm:px-10 flex flex-col gap-5 pt-10 md:pt-20">
+      <div className="w-full md:w-2/3 lg:w-1/2 mx-auto px-4 sm:px-10 flex flex-col gap-5 pt-10 md:pt-20">
         <h1 className="text-2xl font-medium tracking-tight text-center">
           Create New Project
         </h1>
