@@ -1,0 +1,38 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import Team from "../components/Team";
+
+const Teams = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="w-full h-full overflow-x-hidden overflow-y-auto">
+      <div className="sm:sticky top-0 left-0 z-[99] bg-zinc-900 w-full px-4 sm:px-10 py-3 sm:border-b border-zinc-800 flex items-center justify-between">
+        <h1 className="text-[1.5rem] font-medium tracking-tight leading-none">
+          Teams
+        </h1>
+        <button
+          onClick={() => navigate("/create-new-team")}
+          className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 hover:scale-[.99] cursor-pointer"
+        >
+          Add New Team
+        </button>
+      </div>
+      <div className="w-full px-4 sm:px-10 py-5 flex flex-wrap gap-5 lg:gap-8 justify-start">
+        <Team />
+        <Team />
+        <Team />
+        <Team />
+        <Team />
+        <Team />
+        <Team />
+        <Team />
+        <Team />
+        <Team />
+        <Team />
+      </div>
+    </div>
+  );
+};
+
+export default Teams;

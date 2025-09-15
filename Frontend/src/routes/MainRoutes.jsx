@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Layout from "../components/layout/Layout";
 import Projects from "../pages/Projects";
+import Teams from "../pages/Teams";
 import CreateNewProject from "../pages/CreateNewProject";
 import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
@@ -18,6 +19,7 @@ const MainRoutes = () => {
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/teams" element={<Teams />} />
         <Route path="/create-new-project" element={<CreateNewProject />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />

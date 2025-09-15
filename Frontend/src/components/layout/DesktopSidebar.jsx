@@ -21,10 +21,13 @@ const DesktopSidebar = () => {
         <i className="ri-folder-line text-xl"></i>
         <h4 className="text-xl font-normal tracking-tight">Projects</h4>
       </Link>
-      <div className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-2">
+      <Link
+        to="/teams"
+        className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-2"
+      >
         <i className="ri-group-line text-xl"></i>
         <h4 className="text-xl font-normal tracking-tight">Teams</h4>
-      </div>
+      </Link>
       <div className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-2">
         <i className="ri-task-line text-xl"></i>
         <h4 className="text-xl font-normal tracking-tight">Tasks</h4>
