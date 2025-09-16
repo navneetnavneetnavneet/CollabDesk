@@ -6,7 +6,7 @@ const DesktopSidebar = () => {
   return (
     <aside className="relative w-72 h-full hidden sm:flex flex-col border-r border-zinc-800">
       <div className="w-full px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
-        <h1 className="text-2xl font-medium tracking-tight leading-none">
+        <h1 className="text-[1.5rem] font-medium tracking-tight leading-none">
           Collb<span className="text-red-500">Desk</span>
         </h1>
         <div
@@ -28,10 +28,13 @@ const DesktopSidebar = () => {
         <i className="ri-group-line text-xl"></i>
         <h4 className="text-xl font-normal tracking-tight">Teams</h4>
       </Link>
-      <div className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-2">
+      <Link
+        to="/tasks"
+        className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-2"
+      >
         <i className="ri-task-line text-xl"></i>
         <h4 className="text-xl font-normal tracking-tight">Tasks</h4>
-      </div>
+      </Link>
       <div className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-2">
         <i className="ri-chat-1-line text-xl"></i>
         <h4 className="text-xl font-normal tracking-tight">Chats</h4>

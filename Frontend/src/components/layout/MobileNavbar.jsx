@@ -49,6 +49,13 @@ const MobileNavbar = () => {
           <i className="ri-group-line text-xl"></i>
           <h4 className="text-xl font-normal tracking-tight">Teams</h4>
         </Link>
+        <Link
+          to="/tasks"
+          className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-1 cursor-pointer"
+        >
+          <i className="ri-task-line text-xl"></i>
+          <h4 className="text-xl font-normal tracking-tight">Tasks</h4>
+        </Link>
         <div className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-1 cursor-pointer">
           <i className="ri-chat-1-line text-xl"></i>
           <h4 className="text-xl font-normal tracking-tight">Chats</h4>
