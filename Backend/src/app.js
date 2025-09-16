@@ -1,7 +1,9 @@
+const config = require("./config/config");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const ErrorHandler = require("./utils/ErrorHandler");
 
 //  Routes
@@ -10,6 +12,7 @@ const teamRoutes = require("./routes/team.routes");
 const projectRoutes = require("./routes/project.routes");
 const taskRoutes = require("./routes/task.routes");
 
+app.use(cors({ origin: config.REACT_BASE_URL, credentials: true }));
 app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));

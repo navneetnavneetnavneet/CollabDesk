@@ -1,3 +1,4 @@
+const config = require("../config/config");
 const nodemailer = require("nodemailer");
 
 module.exports.sendEmail = async (to, subject, text) => {
@@ -5,13 +6,13 @@ module.exports.sendEmail = async (to, subject, text) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
+        user: config.EMAIL_USER,
+        pass: config.EMAIL_PASSWORD,
       },
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: config.EMAIL_USER,
       to,
       subject,
       text,
