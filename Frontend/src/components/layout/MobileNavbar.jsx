@@ -37,6 +37,13 @@ const MobileNavbar = () => {
           ></i>
         </div>
         <Link
+          to="/"
+          className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-1 cursor-pointer"
+        >
+          <i className="ri-home-line text-xl"></i>
+          <h4 className="text-xl font-normal tracking-tight">Dashbard</h4>
+        </Link>
+        <Link
           to="/projects"
           className="w-full px-4 py-3 hover:bg-zinc-800 duration-300 border-b border-zinc-800 flex items-center gap-1 cursor-pointer"
         >
