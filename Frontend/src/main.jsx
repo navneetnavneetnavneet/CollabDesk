@@ -4,6 +4,7 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/store.jsx";
+import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -11,6 +12,7 @@ createRoot(document.getElementById("root")).render(
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
       <App />
+      <ToastContainer />
     </BrowserRouter>
   </Provider>
 );

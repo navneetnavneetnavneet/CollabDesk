@@ -3,9 +3,78 @@ import StepOne from "../components/steps/StepOne";
 import StepTwo from "../components/steps/StepTwo";
 import StepThree from "../components/steps/StepThree";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { asyncRegisterUser, asyncSendOTP } from "../store/actions/userActions";
 
 const Register = () => {
+  const dispatch = useDispatch();
+
   const [currentStep, setCurrentStep] = useState(1);
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    role: "member",
+    otp: "",
+  });
+
+  const changeHandler = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleNext = () => {
+    const { firstName, lastName } = formData;
+
+    if (!firstName) return toast.warning("First name is required");
+    if (!lastName) return toast.warning("Last name is required");
+
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  const handleOtp = async () => {
+    const { email, password } = formData;
+
+    if (!email) return toast.warning("Email is required");
+    if (!password) return toast.warning("Password is required");
+
+    if (password.length < 6 || password.length > 15) {
+      return toast.warning("Password must be 6–15 characters long");
+    }
+
+    try {
+      const otp = await dispatch(asyncSendOTP(email));
+      if (otp) {
+        setCurrentStep((prev) => prev + 1);
+        console.log("OTP sent:", otp);
+      }
+    } catch (error) {
+      toast.error("Failed to send OTP");
+      console.log(error);
+    }
+  };
+
+  const submitHandler = async () => {
+    const { otp } = formData;
+
+    if (otp.length !== 6) {
+      return toast.warning("OTP must be have 6 characters");
+    }
+
+    try {
+      await dispatch(asyncRegisterUser(formData));
+      toast.success("User Register Successfully!");
+    } catch (error) {
+      toast.error("Registration failed");
+      console.log(error);
+    }
+  };
+
+  const handlePrevious = () => {
+    setCurrentStep((prev) => prev - 1);
+  };
 
   return (
     <div className="w-full h-full px-4 py-2 flex items-center justify-center">
@@ -45,9 +114,29 @@ const Register = () => {
           </h1>
         </div>
         <div className="w-full">
-          {currentStep === 1 && <StepOne />}
-          {currentStep === 2 && <StepTwo />}
-          {currentStep === 3 && <StepThree />}
+          {currentStep === 1 && (
+            <StepOne
+              formData={formData}
+              changeHandler={changeHandler}
+              handleNext={handleNext}
+            />
+          )}
+          {currentStep === 2 && (
+            <StepTwo
+              formData={formData}
+              changeHandler={changeHandler}
+              handlePrevious={handlePrevious}
+              handleOtp={handleOtp}
+            />
+          )}
+          {currentStep === 3 && (
+            <StepThree
+              formData={formData}
+              changeHandler={changeHandler}
+              handlePrevious={handlePrevious}
+              submitHandler={submitHandler}
+            />
+          )}
         </div>
         <p className="text-sm tracking-tight leading-none text-center">
           Already have an account ?

@@ -1,8 +1,31 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { asyncLoginUser } from "../store/actions/userActions";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const submitHandler = async (data) => {
+    try {
+      await dispatch(asyncLoginUser(data));
+      toast.success("User Login Successfully");
+
+      reset();
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
     <div className="w-full h-full px-4 py-2 flex items-center justify-center">
@@ -16,7 +39,10 @@ const Login = () => {
             sit amet.
           </p>
         </div>
-        <form className="w-full flex flex-col gap-3">
+        <form
+          onSubmit={handleSubmit(submitHandler)}
+          className="w-full flex flex-col gap-3"
+        >
           <div className="flex flex-col gap-1">
             <label
               className="text-base font-normal opacity-80"
@@ -31,7 +57,13 @@ const Login = () => {
               type="email"
               placeholder="Enter Email"
               className="w-full px-2 py-2 rounded-md outline-none border border-zinc-400"
+              {...register("email", { required: "This field is required" })}
             />
+            {errors?.email && (
+              <span className="text-xs -mt-1 text-red-500">
+                {errors.email.message}
+              </span>
+            )}
           </div>
           <div className="flex flex-col gap-1">
             <label
@@ -47,12 +79,28 @@ const Login = () => {
                 type={show ? "text" : "password"}
                 placeholder="Enter Password"
                 className="w-full outline-none bg-transparent"
+                {...register("password", {
+                  required: "This field is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "Password must be at most 15 characters",
+                  },
+                })}
               />
               <i
                 onClick={() => setShow(!show)}
-                class={`ri-eye${show ? "" : "-off"}-line cursor-pointer`}
+                className={`ri-eye${show ? "" : "-off"}-line cursor-pointer`}
               ></i>
             </div>
+            {errors?.password && (
+              <span className="text-xs -mt-1 text-red-500">
+                {errors.password.message}
+              </span>
+            )}
           </div>
           <button className="w-full flex items-center justify-center gap-1 mt-3 px-2 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600 duration-300 cursor-pointer">
             Login

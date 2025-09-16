@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
@@ -11,8 +11,22 @@ import CreateNewProject from "../pages/CreateNewProject";
 import CreateNewTask from "../pages/CreateNewTask";
 import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncLoadUser } from "../store/actions/userActions";
 
 const MainRoutes = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isAuthenticated } = useSelector((state) => state.userReducer);
+
+  useEffect(() => {
+    dispatch(asyncLoadUser());
+
+    isAuthenticated && navigate("/");
+    !isAuthenticated && navigate("/login");
+  }, [isAuthenticated]);
+
   return (
     <Routes>
       <Route path="/register" element={<Register />} />
