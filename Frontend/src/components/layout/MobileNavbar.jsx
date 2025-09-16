@@ -10,7 +10,7 @@ const MobileNavbar = () => {
       <nav className="w-full px-4 py-2 flex flex-shrink-0 sm:hidden items-center justify-between border-b border-zinc-800 overflow-hidden">
         <div className="flex items-center gap-1">
           <i
-            onClick={() => setWidth(100)}
+            onClick={() => setWidth(50)}
             className="ri-menu-line text-xl cursor-pointer"
           ></i>
           <h1 className="text-[1.5rem] font-medium tracking-tight leading-none">
@@ -23,10 +23,11 @@ const MobileNavbar = () => {
         ></div>
       </nav>
       <aside
+        onClick={() => setWidth(0)}
         style={{ width: `${width}%` }}
         className={`${
           width === 0 ? "hidden" : "flex"
-        } flex sm:hidden flex-col duration-300 absolute top-0 left-0 h-full bg-zinc-900 z-10`}
+        } flex sm:hidden flex-col duration-300 border-r border-zinc-800 absolute top-0 left-0 h-full bg-zinc-900 z-10`}
       >
         <div className="w-full px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
           <i className="ri-menu-line text-xl cursor-pointer"></i>

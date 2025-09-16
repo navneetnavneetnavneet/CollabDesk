@@ -8,6 +8,7 @@ import Projects from "../pages/Projects";
 import Teams from "../pages/Teams";
 import Tasks from "../pages/Tasks";
 import CreateNewProject from "../pages/CreateNewProject";
+import CreateNewTask from "../pages/CreateNewTask";
 import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
 
@@ -23,6 +24,7 @@ const MainRoutes = () => {
         <Route path="/teams" element={<Teams />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/create-new-project" element={<CreateNewProject />} />
+        <Route path="/create-new-task" element={<CreateNewTask />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
       </Route>
