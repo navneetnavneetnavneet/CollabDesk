@@ -3,6 +3,7 @@ const router = express.Router();
 const { body } = require("express-validator");
 const authController = require("../controllers/auth.controller");
 const authUser = require("../middlewares/auth.middleware");
+const upload = require("../middlewares/multer.middleware");
 
 router.post(
   "/verify-email",
@@ -48,5 +49,37 @@ router.post(
 router.get("/logout", authUser.isAuthenticated, authController.logoutUser);
 
 router.get("/user", authUser.isAuthenticated, authController.loggedInUser);
+
+router.post(
+  "/edit",
+  authUser.isAuthenticated,
+  upload.single("profileImage"),
+  (req, res, next) => {
+    if (req.body.fullName) {
+      try {
+        req.body.fullName = JSON.parse(req.body.fullName);
+      } catch (err) {
+        return res.status(400).json({ error: "Invalid fullName JSON" });
+      }
+    }
+    next();
+  },
+  [
+    body("fullName").isObject().withMessage("Full name must be an object !"),
+    body("fullName.firstName")
+      .exists()
+      .notEmpty()
+      .withMessage("First name is required !"),
+    body("fullName.lastName")
+      .exists()
+      .notEmpty()
+      .withMessage("Last name is required !"),
+    body("email").isEmail().withMessage("Invalid email !"),
+    body("role")
+      .isIn(["admin", "manager", "member"])
+      .withMessage("Role must be eigther (admin, manager, member)"),
+  ],
+  authController.editUser
+);
 
 module.exports = router;

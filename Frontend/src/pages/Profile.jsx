@@ -14,7 +14,13 @@ const Profile = () => {
   return user ? (
     <div className="w-full h-full px-4 sm:px-10">
       <div className="w-full md:w-2/3 lg:w-2/3 mx-auto pt-10 sm:pt-20 flex flex-col gap-5 items-center">
-        <div className="w-20 sm:w-28 h-20 sm:h-28 rounded-full border border-zinc-800 overflow-hidden"></div>
+        <div className="w-20 sm:w-28 h-20 sm:h-28 rounded-full border border-zinc-800 overflow-hidden">
+          <img
+            className="w-full h-full object-cover"
+            src={user?.profileImage?.url}
+            alt=""
+          />
+        </div>
         <div className="flex flex-col items-center justify-center">
           <h3 className="text-[1.5rem] font-medium tracking-tight">
             {`${user.fullName.firstName} ${user.fullName.lastName}`}

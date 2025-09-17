@@ -72,3 +72,32 @@ export const asyncLogoutUser = () => async (dispatch, getState) => {
     console.log(error.response.data);
   }
 };
+
+export const asyncEditUser =
+  ({ fullName, email, role, profileImage }) =>
+  async (dispatch, getState) => {
+    const formData = new FormData();
+
+    formData.append("fullName", JSON.stringify(fullName));
+    formData.append("email", email);
+    formData.append("role", role);
+
+    if (profileImage) {
+      formData.append("profileImage", profileImage);
+    }
+    console.log(formData);
+
+    try {
+      const { data, status } = await axios.post("/auth/edit", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (data && status === 200) {
+        await dispatch(asyncLoadUser());
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
