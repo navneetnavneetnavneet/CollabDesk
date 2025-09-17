@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Team from "../components/Team";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncFetchAllTeam } from "../store/actions/teamActions";
+import { setTeams } from "../store/reducers/teamSlice";
+import Loading from "../pages/Loading";
 
 const Teams = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  return (
+  const { teams } = useSelector((state) => state.teamReducer);
+
+  useEffect(() => {
+    dispatch(asyncFetchAllTeam());
+
+    return () => {
+      dispatch(setTeams([]));
+    };
+  }, []);
+
+  return teams ? (
     <div className="w-full h-full overflow-x-hidden overflow-y-auto">
       <div className="sm:sticky top-0 left-0 z-[99] bg-zinc-900 w-full px-4 sm:px-10 py-3 sm:border-b border-zinc-800 flex items-center justify-between">
         <h1 className="text-[1.5rem] font-medium tracking-tight leading-none">
@@ -19,19 +34,13 @@ const Teams = () => {
         </button>
       </div>
       <div className="w-full px-4 sm:px-10 py-5 flex flex-wrap gap-5 lg:gap-8 justify-start">
-        <Team />
-        <Team />
-        <Team />
-        <Team />
-        <Team />
-        <Team />
-        <Team />
-        <Team />
-        <Team />
-        <Team />
-        <Team />
+        {teams.length > 0
+          ? teams.map((team) => <Team key={team._id} team={team} />)
+          : ""}
       </div>
     </div>
+  ) : (
+    <Loading />
   );
 };
 

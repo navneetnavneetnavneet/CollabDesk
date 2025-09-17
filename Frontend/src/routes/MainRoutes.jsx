@@ -13,6 +13,9 @@ import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
 import { useDispatch, useSelector } from "react-redux";
 import { asyncLoadUser } from "../store/actions/userActions";
+import TeamDetails from "../pages/TeamDetails";
+import CreateNewTeam from "../pages/CreateNewTeam";
+import ProjectDetails from "../pages/ProjectDetails";
 
 const MainRoutes = () => {
   const navigate = useNavigate();
@@ -36,7 +39,13 @@ const MainRoutes = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/teams" element={<Teams />} />
+        <Route path="/team/details/:teamId" element={<TeamDetails />} />
+        <Route
+          path="/project/details/:projectId"
+          element={<ProjectDetails />}
+        />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/create-new-team" element={<CreateNewTeam />} />
         <Route path="/create-new-project" element={<CreateNewProject />} />
         <Route path="/create-new-task" element={<CreateNewTask />} />
         <Route path="/profile" element={<Profile />} />

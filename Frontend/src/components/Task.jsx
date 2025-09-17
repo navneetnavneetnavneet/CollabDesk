@@ -2,7 +2,7 @@ import React from "react";
 
 const Task = () => {
   return (
-    <div className="w-full sm:w-[47%] md:w-[30%] lg:w-[23%] px-4 py-8 hover:bg-zinc-800 duration-300 hover:scale-[.99] flex flex-col items-center justify-center gap-2 rounded-md border border-zinc-800 shadow-md">
+    <div className="w-full sm:w-[100%] md:w-[48%] lg:w-[31.5%] px-4 py-8 hover:bg-zinc-800 duration-300 hover:scale-[.99] flex flex-col items-center justify-center gap-2 rounded-md border border-zinc-800 shadow-md">
       <h1 className="text-[1.5rem] font-medium tracking-tight leading-none text-center">
         Task Title
       </h1>

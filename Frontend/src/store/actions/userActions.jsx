@@ -85,7 +85,6 @@ export const asyncEditUser =
     if (profileImage) {
       formData.append("profileImage", profileImage);
     }
-    console.log(formData);
 
     try {
       const { data, status } = await axios.post("/auth/edit", formData, {
