@@ -9,6 +9,7 @@ const { sendEmail } = require("../services/nodemailer.service");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
+const { hanldeFileUpload } = require("../services/imagekit.service");
 
 module.exports.verifyEmail = catchAsyncError(async (req, res, next) => {
   const errors = validationResult(req);
@@ -142,5 +143,29 @@ module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
 
 module.exports.loggedInUser = catchAsyncError(async (req, res, next) => {
   const user = await userModel.findById(req.user._id);
+  res.status(200).json(user);
+});
+
+module.exports.editUser = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const { fullName, email, role } = req.body;
+
+  const user = await userModel.findByIdAndUpdate(
+    req.user._id,
+    { fullName, email, role },
+    { new: true }
+  );
+
+  if (req.file) {
+    const { fileId, url, fileType } = await hanldeFileUpload(req.file);
+    user.profileImage = { fileId, url, fileType };
+    await user.save();
+  }
+
   res.status(200).json(user);
 });
