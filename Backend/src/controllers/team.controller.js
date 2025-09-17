@@ -157,7 +157,10 @@ module.exports.getTeamDetails = catchAsyncError(async (req, res, next) => {
 
   const { teamId } = req.params;
 
-  const team = await teamModel.findById(teamId);
+  const team = await teamModel
+    .findById(teamId)
+    .populate("members")
+    .populate("projects");
 
   if (!team) {
     return next(new ErrorHandler("Team is not found !", 404));
