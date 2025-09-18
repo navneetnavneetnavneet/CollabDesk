@@ -169,3 +169,24 @@ module.exports.editUser = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json(user);
 });
+
+module.exports.getAllUser = catchAsyncError(async (req, res, next) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          {
+            fullName: {
+              firstName: { $regex: req.query.search, $options: "i" },
+            },
+          },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const users = await userModel
+    .find(keyword)
+    .find({ _id: { $ne: req.user._id } });
+
+  res.status(200).json(users);
+});

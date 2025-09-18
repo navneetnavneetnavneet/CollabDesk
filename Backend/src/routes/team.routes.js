@@ -15,7 +15,7 @@ router.post(
 router.post(
   "/invite",
   authUser.isAuthenticated,
-  authUser.checkRole("admin"),
+  authUser.checkRole("admin", "manager"),
   [
     body("teamId").isMongoId().withMessage("Inavlid teamId !"),
     body("email").isEmail().withMessage("Inavlid email !"),
@@ -42,7 +42,7 @@ router.get("/my", authUser.isAuthenticated, teamController.getMyTeams);
 router.delete(
   "/:teamId/delete/:userId",
   authUser.isAuthenticated,
-  authUser.checkRole("admin"),
+  authUser.checkRole("admin", "manager"),
   [
     param("teamId").isMongoId().withMessage("Invalid teamId !"),
     param("userId").isMongoId().withMessage("Invalid userId !"),
@@ -53,7 +53,7 @@ router.delete(
 router.delete(
   "/delete/:teamId",
   authUser.isAuthenticated,
-  authUser.checkRole("admin"),
+  authUser.checkRole("admin", "manager"),
   param("teamId").isMongoId().withMessage("Invalid teamId !"),
   teamController.deleteTeam
 );

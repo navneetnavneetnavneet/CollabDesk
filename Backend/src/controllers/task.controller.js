@@ -61,7 +61,12 @@ module.exports.getTaskDetails = catchAsyncError(async (req, res, next) => {
   const task = await taskModel
     .findById(taskId)
     .populate("createdBy")
-    .populate("project")
+    .populate({
+      path: "project",
+      populate: {
+        path: "createdBy",
+      },
+    })
     .populate("assignee");
 
   if (!task) {
@@ -71,27 +76,46 @@ module.exports.getTaskDetails = catchAsyncError(async (req, res, next) => {
   res.status(200).json(task);
 });
 
+// module.exports.getProjectTasks = catchAsyncError(async (req, res, next) => {
+//   const errors = validationResult(req);
+
+//   if (!errors.isEmpty()) {
+//     return res.status(400).json({ message: errors.array() });
+//   }
+
+//   const { projectId } = req.params;
+
+//   const project = await projectModel.findById(projectId).populate({
+//     path: "tasks",
+//     populate: {
+//       path: "createdBy",
+//     },
+//   });
+
+//   if (!project) {
+//     return res.next("Project is not found !", 404);
+//   }
+
+//   res.status(200).json(project);
+// });
+
 module.exports.getProjectTasks = catchAsyncError(async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     return res.status(400).json({ message: errors.array() });
   }
-
+  
+  const user = req.user;
   const { projectId } = req.params;
 
-  const project = await projectModel.findById(projectId).populate({
-    path: "tasks",
-    populate: {
-      path: "createdBy",
-    },
-  });
+  const tasks = await taskModel
+    .find({ project: projectId })
+    .populate("createdBy")
+    .populate("project")
+    .populate("assignee");
 
-  if (!project) {
-    return res.next("Project is not found !", 404);
-  }
-
-  res.status(200).json(project);
+  res.status(200).json(tasks);
 });
 
 module.exports.updateTask = catchAsyncError(async (req, res, next) => {

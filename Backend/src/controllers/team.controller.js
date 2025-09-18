@@ -8,6 +8,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const { v4: uuidv4 } = require("uuid");
 const { sendEmail } = require("../services/nodemailer.service");
 const inviteModel = require("../models/invite.model");
+const config = require("../config/config");
 
 module.exports.createTeam = catchAsyncError(async (req, res, next) => {
   const errors = validationResult(req);
@@ -75,9 +76,7 @@ module.exports.inviteMember = catchAsyncError(async (req, res, next) => {
 
   const token = uuidv4();
 
-  const invitationLink = `${req.protocol}://${req.get(
-    "host"
-  )}/api/team/join/${token}`;
+  const invitationLink = `${config.REACT_BASE_URL}/teams/join/${token}`;
 
   sendEmail(
     user.email,
@@ -260,7 +259,6 @@ module.exports.deleteTeam = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({
     message: "Team is successfully delete",
-    user,
   });
 });
 
