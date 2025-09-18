@@ -160,7 +160,12 @@ module.exports.getTeamDetails = catchAsyncError(async (req, res, next) => {
   const team = await teamModel
     .findById(teamId)
     .populate("members")
-    .populate("projects");
+    .populate({
+      path: "projects",
+      populate: {
+        path: "createdBy",
+      },
+    });
 
   if (!team) {
     return next(new ErrorHandler("Team is not found !", 404));
@@ -175,7 +180,12 @@ module.exports.getMyTeams = catchAsyncError(async (req, res, next) => {
       members: { $eq: { _id: req.user._id } },
     })
     .populate("members")
-    .populate("projects");
+    .populate({
+      path: "projects",
+      populate: {
+        path: "createdBy",
+      },
+    });
 
   res.status(200).json(teams);
 });

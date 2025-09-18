@@ -52,33 +52,25 @@ module.exports.createProject = catchAsyncError(async (req, res, next) => {
 });
 
 module.exports.getProjectsByTeam = catchAsyncError(async (req, res, next) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ message: errors.array() });
-  }
-
-  const { teamId } = req.params;
   const user = req.user;
 
-  const team = await teamModel.findById(teamId);
-
-  if (!team) {
-    return next(new ErrorHandler("Team is not found !", 404));
-  }
-
-  const isTeamMember = team.members.includes(user._id);
-
-  if (user.role !== "admin" && user.role !== "manager" && !isTeamMember) {
-    return next(new ErrorHandler("Access denied !", 403));
-  }
-
-  const projects = await projectModel.find({ team: teamId }).populate({
-    path: "team",
-    populate: {
-      path: "members",
-    },
-  });
+  const projects = await projectModel
+    .find({
+      $or: [
+        { members: user._id },
+        { team: { $in: req.user.teams } },
+        { createdBy: user._id },
+      ],
+    })
+    .populate("createdBy")
+    .populate("members")
+    .populate("tasks")
+    .populate({
+      path: "team",
+      populate: {
+        path: "members",
+      },
+    });
 
   res.status(200).json(projects);
 });

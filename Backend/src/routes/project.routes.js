@@ -25,9 +25,8 @@ router.post(
 );
 
 router.get(
-  "/:teamId",
+  "/my-projects",
   authUser.isAuthenticated,
-  param("teamId").isMongoId().withMessage("Invalid teamId !"),
   projectController.getProjectsByTeam
 );
 
