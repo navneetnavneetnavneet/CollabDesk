@@ -24,3 +24,15 @@ export const asyncGetTeamDetails = (teamId) => async (dispatch, getState) => {
     console.log(error.response.data);
   }
 };
+
+export const asyncCreateTeam = (name) => async (dispatch, getState) => {
+  try {
+    const { data, status } = await axios.post("/team/create", { name });
+
+    if (data && status === 201) {
+      await dispatch(asyncFetchAllTeam());
+    }
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};
