@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Project from "../components/Project";
 import { useDispatch, useSelector } from "react-redux";
-import { asyncFetchAllProjects } from "../store/actions/projectActions";
+import { asyncFetchAllProject } from "../store/actions/projectActions";
 import { setProjects } from "../store/reducers/projectSlice";
 import Loading from "../pages/Loading";
 
@@ -11,7 +11,7 @@ const Projects = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(asyncFetchAllProjects());
+    dispatch(asyncFetchAllProject());
 
     return () => {
       dispatch(setProjects([]));

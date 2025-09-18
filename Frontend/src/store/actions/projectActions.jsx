@@ -1,7 +1,7 @@
 import axios from "../../util/axios";
 import { setProject, setProjects } from "../reducers/projectSlice";
 
-export const asyncFetchAllProjects = () => async (dispatch, getState) => {
+export const asyncFetchAllProject = () => async (dispatch, getState) => {
   try {
     const { data, status } = await axios.get("/project/my-projects");
 

@@ -6,6 +6,8 @@ import { setProject } from "../store/reducers/projectSlice";
 import Team from "../components/Team";
 import Task from "../components/Task";
 import Loading from "./Loading";
+import { asyncFetchAllTask } from "../store/actions/taskActions";
+import { setTasks } from "../store/reducers/taskSlice";
 
 const ProjectDetails = () => {
   const dispatch = useDispatch();
@@ -13,13 +15,18 @@ const ProjectDetails = () => {
 
   useEffect(() => {
     dispatch(asyncGetProjectDetails(projectId));
+    dispatch(asyncFetchAllTask(projectId));
 
     return () => {
       dispatch(setProject(null));
+      dispatch(setTasks([]));
     };
   }, [projectId]);
 
   const { project } = useSelector((state) => state.projectReducer);
+  const { tasks } = useSelector((state) => state.taskReducer);
+
+  console.log(tasks);
 
   return project ? (
     <div className="w-full h-full px-4 sm:px-10 py-3 sm:py-10 flex flex-col gap-10 overflow-y-auto">
@@ -84,8 +91,8 @@ const ProjectDetails = () => {
           Tasks
         </h3>
         <div className="w-full flex flex-wrap gap-5">
-          {project.tasks.length > 0 ? (
-            project.tasks.map((task) => <Task key={task._id} task={task} />)
+          {tasks.length > 0 ? (
+            tasks.map((task) => <Task key={task._id} task={task} />)
           ) : (
             <h3 className="w-full text-center text-xs tracking-tight opacity-60">
               No tasks here.

@@ -16,6 +16,7 @@ import { asyncLoadUser } from "../store/actions/userActions";
 import TeamDetails from "../pages/TeamDetails";
 import CreateNewTeam from "../pages/CreateNewTeam";
 import ProjectDetails from "../pages/ProjectDetails";
+import TaskDetails from "../pages/TaskDetails";
 
 const MainRoutes = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const MainRoutes = () => {
           path="/project/details/:projectId"
           element={<ProjectDetails />}
         />
+        <Route path="/task/details/:taskId" element={<TaskDetails />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/create-new-team" element={<CreateNewTeam />} />
         <Route path="/create-new-project" element={<CreateNewProject />} />
