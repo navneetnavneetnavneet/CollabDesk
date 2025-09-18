@@ -12,7 +12,8 @@ const Project = ({ project }) => {
           {project.name}
         </h1>
         <h3 className="text-[1.25rem] font-normal tracking-tight leading-none opacity-60 text-center">
-          Created By : Navneet Singh
+          Created By :
+          {` ${project.createdBy.fullName.firstName} ${project.createdBy.fullName.lastName}`}
         </h3>
         <h4 className="text-base font-normal tracking-tight leading-none opacity-60">
           Tasks : {project.tasks.length}
