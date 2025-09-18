@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Team from "../components/Team";
 import { useDispatch, useSelector } from "react-redux";
 import { asyncFetchAllTeam } from "../store/actions/teamActions";
@@ -22,7 +22,7 @@ const Teams = () => {
   }, []);
 
   return user && teams ? (
-    <div className="w-full h-full overflow-x-hidden overflow-y-auto">
+    <div className="relative w-full h-full overflow-x-hidden overflow-y-auto">
       <div className="sm:sticky top-0 left-0 z-[99] bg-zinc-900 w-full px-4 sm:px-10 py-3 sm:border-b border-zinc-800 flex items-center justify-between">
         <h1 className="text-[1.5rem] font-medium tracking-tight leading-none">
           Teams
@@ -37,7 +37,7 @@ const Teams = () => {
         )}
       </div>
       <div className="w-full px-4 sm:px-10 py-5 flex flex-wrap gap-5 lg:gap-8 justify-start">
-        {!teams.length > 0 ? (
+        {teams.length > 0 ? (
           teams.map((team) => <Team key={team._id} team={team} />)
         ) : (
           <h3 className="w-full text-center text-xs tracking-tight opacity-60">
@@ -45,6 +45,7 @@ const Teams = () => {
           </h3>
         )}
       </div>
+      <Outlet />
     </div>
   ) : (
     <Loading />

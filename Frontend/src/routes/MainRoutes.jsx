@@ -17,6 +17,8 @@ import TeamDetails from "../pages/TeamDetails";
 import CreateNewTeam from "../pages/CreateNewTeam";
 import ProjectDetails from "../pages/ProjectDetails";
 import TaskDetails from "../pages/TaskDetails";
+import InviteMember from "../components/InviteMember";
+import JoinMember from "../components/JoinMember";
 
 const MainRoutes = () => {
   const navigate = useNavigate();
@@ -39,8 +41,13 @@ const MainRoutes = () => {
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
-        <Route path="/teams" element={<Teams />} />
+
+        <Route path="/teams" element={<Teams />}>
+          <Route path="/teams/invite" element={<InviteMember />} />
+          <Route path="/teams/join/:token" element={<JoinMember />} />
+        </Route>
         <Route path="/team/details/:teamId" element={<TeamDetails />} />
+
         <Route
           path="/project/details/:projectId"
           element={<ProjectDetails />}

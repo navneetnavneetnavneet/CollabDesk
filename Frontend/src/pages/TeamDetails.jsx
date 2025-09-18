@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "./Loading";
 import Project from "../components/Project";
-import { asyncGetTeamDetails } from "../store/actions/teamActions";
+import {
+  asyncDeleteTeam,
+  asyncGetTeamDetails,
+  asyncLeaveTeam,
+} from "../store/actions/teamActions";
 import { setTeam } from "../store/reducers/teamSlice";
+import { toast } from "react-toastify";
 
 const TeamDetails = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { teamId } = useParams();
 
@@ -19,16 +25,51 @@ const TeamDetails = () => {
     return () => setTeam(null);
   }, [teamId]);
 
-  console.log(team);
+  const deleteTeamHandler = async () => {
+    await dispatch(asyncDeleteTeam(teamId));
+    toast.success("Team delete successfully");
+    navigate("/");
+  };
+
+  const leaveTeamHandler = async () => {
+    await dispatch(asyncLeaveTeam(teamId));
+    toast.success("Team leave successfully");
+    navigate("/");
+  };
 
   return user && team ? (
     <div className="w-full h-full px-4 sm:px-10 py-3 sm:py-10 overflow-y-auto">
-      <h1 className="text-[1.5rem] sm:text-[2rem] font-medium tracking-tight leading-none">
-        {team.name}
-      </h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-[1.5rem] sm:text-[2rem] font-medium tracking-tight leading-none">
+          {team.name}
+        </h1>
+        {user.role === "admin" || user.role === "manager" ? (
+          <button
+            onClick={deleteTeamHandler}
+            className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-red-500 duration-300 cursor-pointer"
+          >
+            Delete Team
+          </button>
+        ) : (
+          <button
+            onClick={leaveTeamHandler}
+            className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-red-500 duration-300 cursor-pointer"
+          >
+            Leave Team
+          </button>
+        )}
+      </div>
       <div className="pt-5 flex flex-col gap-2">
-        <h1 className="text-xl tracking-tight">Members</h1>
-        {(user.role === "admin" || user.role === "manager") && (
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl tracking-tight">Members</h1>
+          <button
+            onClick={() => navigate("/teams/invite")}
+            className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 cursor-pointer"
+          >
+            Invite New Member
+          </button>
+        </div>
+        {/* {(user.role === "admin" || user.role === "manager") && (
           <div className="flex items-center justify-between sm:justify-start gap-5">
             <button className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 cursor-pointer">
               Add New Member
@@ -37,7 +78,7 @@ const TeamDetails = () => {
               Remove Member
             </button>
           </div>
-        )}
+        )} */}
         <div className="flex gap-6 flex-wrap">
           {team.members.length > 0 ? (
             team.members.map((member) => (
