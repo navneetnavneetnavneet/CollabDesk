@@ -97,3 +97,16 @@ export const asyncUpdateProject =
       console.log(error.response.data);
     }
   };
+
+export const asyncDeleteProject = (projectId) => async (dispatch, getState) => {
+  try {
+    const { data, status } = await axios.delete(`/project/delete/${projectId}`);
+
+    if (data && status === 200) {
+      await dispatch(setProject(null));
+      await dispatch(asyncFetchAllProject());
+    }
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};

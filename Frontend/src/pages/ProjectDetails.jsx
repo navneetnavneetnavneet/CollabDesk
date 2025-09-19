@@ -1,8 +1,9 @@
-import React, { act, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   asyncAddNewMember,
+  asyncDeleteProject,
   asyncGetProjectDetails,
   asyncRemoveMember,
 } from "../store/actions/projectActions";
@@ -100,12 +101,23 @@ const ProjectDetails = () => {
             Deadline : {new Date(project.deadline).toLocaleDateString()}
           </h3>
         </div>
-        <button
-          onClick={() => navigate(`/update-project-deatils/${project._id}`)}
-          className="w-fit px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
-        >
-          Update Group
-        </button>
+        <div className="flex items-center gap-5">
+          <button
+            onClick={() => navigate(`/update-project-deatils/${project._id}`)}
+            className="w-fit px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
+          >
+            Update Project
+          </button>
+          <button
+            onClick={async () => {
+              await dispatch(asyncDeleteProject(project._id));
+              await navigate("/projects");
+            }}
+            className="w-fit px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
+          >
+            Delete Project
+          </button>
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-xl font-normal tracking-tight leading-none">
