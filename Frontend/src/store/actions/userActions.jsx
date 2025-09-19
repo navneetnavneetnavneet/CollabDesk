@@ -1,4 +1,4 @@
-import { loadUser, removeUser } from "../reducers/userSlice";
+import { loadUser, removeUser, setAllUser } from "../reducers/userSlice";
 import axios from "../../util/axios";
 
 export const asyncLoadUser = () => async (dispatch, getState) => {
@@ -100,3 +100,15 @@ export const asyncEditUser =
       console.log(error.response.data);
     }
   };
+
+export const asyncFetchAllUser = () => async (dispatch, getState) => {
+  try {
+    const { data, status } = await axios.get("/auth/users");
+
+    if (data && status === 200) {
+      await dispatch(setAllUser(data));
+    }
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};

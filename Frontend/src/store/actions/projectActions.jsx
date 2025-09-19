@@ -44,3 +44,35 @@ export const asyncCreateProject =
       console.log(error.response.data);
     }
   };
+
+export const asyncAddNewMember =
+  (projectId, userId) => async (dispatch, getState) => {
+    try {
+      const { data, status } = await axios.post(
+        `/project/${projectId}/add-member`,
+        { userId }
+      );
+
+      if (data && status === 200) {
+        await dispatch(asyncFetchAllProject());
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+export const asyncRemoveMember =
+  (projectId, userId) => async (dispatch, getState) => {
+    try {
+      const { data, status } = await axios.delete(
+        `/project/${projectId}/remove-member/${userId}`,
+        { userId }
+      );
+
+      if (data && status === 200) {
+        await dispatch(asyncFetchAllProject());
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };

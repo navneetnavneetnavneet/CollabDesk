@@ -12,13 +12,14 @@ import CreateNewTask from "../pages/CreateNewTask";
 import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
 import { useDispatch, useSelector } from "react-redux";
-import { asyncLoadUser } from "../store/actions/userActions";
+import { asyncFetchAllUser, asyncLoadUser } from "../store/actions/userActions";
 import TeamDetails from "../pages/TeamDetails";
 import CreateNewTeam from "../pages/CreateNewTeam";
 import ProjectDetails from "../pages/ProjectDetails";
 import TaskDetails from "../pages/TaskDetails";
 import InviteMember from "../components/InviteMember";
 import JoinMember from "../components/JoinMember";
+import { setAllUser } from "../store/reducers/userSlice";
 
 const MainRoutes = () => {
   const navigate = useNavigate();
@@ -28,9 +29,14 @@ const MainRoutes = () => {
 
   useEffect(() => {
     dispatch(asyncLoadUser());
+    dispatch(asyncFetchAllUser());
 
     isAuthenticated && navigate("/");
     !isAuthenticated && navigate("/login");
+
+    return () => {
+      dispatch(setAllUser([]));
+    };
   }, [isAuthenticated]);
 
   return (
