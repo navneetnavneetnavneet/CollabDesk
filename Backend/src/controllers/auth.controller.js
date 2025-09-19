@@ -142,7 +142,7 @@ module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
 });
 
 module.exports.loggedInUser = catchAsyncError(async (req, res, next) => {
-  const user = await userModel.findById(req.user._id);
+  const user = await userModel.findById(req.user._id).populate("teams");
   res.status(200).json(user);
 });
 
@@ -187,6 +187,12 @@ module.exports.getAllUser = catchAsyncError(async (req, res, next) => {
   const users = await userModel
     .find(keyword)
     .find({ _id: { $ne: req.user._id } });
+
+  res.status(200).json(users);
+});
+
+module.exports.fetchAllUser = catchAsyncError(async (req, res, next) => {
+  const users = await userModel.find({ _id: { $ne: req.user._id } });
 
   res.status(200).json(users);
 });

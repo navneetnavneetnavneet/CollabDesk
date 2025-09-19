@@ -13,11 +13,6 @@ router.post(
     body("description")
       .notEmpty()
       .withMessage("Project description is required"),
-    body("status")
-      .isIn(["not-started", "in-progress", "completed", "on-hold"])
-      .withMessage(
-        "Project status must be eigther (not-started, in-progress, completed, on-hold)"
-      ),
     body("deadline").notEmpty().withMessage("Project deadline is required !"),
     body("team").isMongoId().withMessage("Invalid teamId !"),
   ],

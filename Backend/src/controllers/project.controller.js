@@ -14,7 +14,7 @@ module.exports.createProject = catchAsyncError(async (req, res, next) => {
     return res.status(400).json({ message: errors.array() });
   }
 
-  const { name, description, status, deadline, team, members } = req.body;
+  const { name, description, deadline, team, members } = req.body;
 
   const isTeam = await teamModel.findById(team);
 
@@ -35,7 +35,6 @@ module.exports.createProject = catchAsyncError(async (req, res, next) => {
   const project = await projectModel.create({
     name,
     description,
-    status,
     deadline,
     team,
     members,

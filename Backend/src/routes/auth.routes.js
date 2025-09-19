@@ -84,4 +84,6 @@ router.post(
 
 router.get("/all-user", authUser.isAuthenticated, authController.getAllUser);
 
+router.get("/users", authUser.isAuthenticated, authController.fetchAllUser);
+
 module.exports = router;
