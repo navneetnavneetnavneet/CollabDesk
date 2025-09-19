@@ -25,3 +25,22 @@ export const asyncGetProjectDetails =
       console.log(error.response.data);
     }
   };
+
+export const asyncCreateProject =
+  ({ name, description, deadline, team }) =>
+  async (dispatch, getState) => {
+    try {
+      const { data, status } = await axios.post("/project/create", {
+        name,
+        description,
+        deadline,
+        team,
+      });
+
+      if (data && status === 201) {
+        await dispatch(asyncFetchAllProject());
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
