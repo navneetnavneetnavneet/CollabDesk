@@ -1,6 +1,6 @@
 import React, { act, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   asyncAddNewMember,
   asyncGetProjectDetails,
@@ -15,6 +15,7 @@ import { setTasks } from "../store/reducers/taskSlice";
 import axios from "../util/axios";
 
 const ProjectDetails = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { projectId } = useParams();
 
@@ -99,6 +100,12 @@ const ProjectDetails = () => {
             Deadline : {new Date(project.deadline).toLocaleDateString()}
           </h3>
         </div>
+        <button
+          onClick={() => navigate(`/update-project-deatils/${project._id}`)}
+          className="w-fit px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
+        >
+          Update Group
+        </button>
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-xl font-normal tracking-tight leading-none">

@@ -76,3 +76,24 @@ export const asyncRemoveMember =
       console.log(error.response.data);
     }
   };
+
+export const asyncUpdateProject =
+  (projectId, { name, description, deadline, status }) =>
+  async (dispatch, getState) => {
+    try {
+      const { data } = await axios.put(`/project/update/${projectId}`, {
+        name,
+        description,
+        deadline,
+        status,
+      });
+
+      if (data) {
+        await dispatch(asyncGetProjectDetails());
+      }
+    } catch (error) {
+      console.log(error);
+
+      console.log(error.response.data);
+    }
+  };
