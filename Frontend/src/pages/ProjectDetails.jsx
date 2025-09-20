@@ -11,8 +11,8 @@ import { setProject } from "../store/reducers/projectSlice";
 import Team from "../components/Team";
 import Task from "../components/Task";
 import Loading from "./Loading";
-import { asyncFetchAllTask } from "../store/actions/taskActions";
-import { setTasks } from "../store/reducers/taskSlice";
+import { asyncFetchProjectTasks } from "../store/actions/taskActions";
+import { setProjectTasks } from "../store/reducers/taskSlice";
 import axios from "../util/axios";
 
 const ProjectDetails = () => {
@@ -55,17 +55,17 @@ const ProjectDetails = () => {
   useEffect(() => {
     if (projectId) {
       dispatch(asyncGetProjectDetails(projectId));
-      dispatch(asyncFetchAllTask(projectId));
+      dispatch(asyncFetchProjectTasks(projectId));
     }
 
     return () => {
       dispatch(setProject(null));
-      dispatch(setTasks([]));
+      dispatch(setProjectTasks([]));
     };
   }, [projectId, dispatch]);
 
   const { project } = useSelector((state) => state.projectReducer);
-  const { tasks } = useSelector((state) => state.taskReducer);
+  const { projectTasks } = useSelector((state) => state.taskReducer);
 
   const addNewMemberHandler = async (userId) => {
     if (userId && project?._id) {
@@ -244,8 +244,8 @@ const ProjectDetails = () => {
           Tasks
         </h3>
         <div className="w-full flex flex-wrap gap-5">
-          {tasks.length > 0 ? (
-            tasks.map((task) => <Task key={task._id} task={task} />)
+          {projectTasks?.length > 0 ? (
+            projectTasks?.map((task) => <Task key={task._id} task={task} />)
           ) : (
             <h3 className="w-full text-center text-xs tracking-tight opacity-60">
               No tasks here.

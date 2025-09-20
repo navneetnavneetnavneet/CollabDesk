@@ -58,7 +58,7 @@ const InviteMember = () => {
   };
 
   return (
-    <div className="w-full h-full py-4 sm:py-10 z-[999] bg-zinc-900 absolute top-0 left-0">
+    <div className="w-full h-full py-4 sm:py-10 z-[9] bg-zinc-900 absolute top-0 left-0">
       <div className="w-full md:w-2/3 lg:w-1/2 mx-auto px-4 sm:px-10 flex flex-col gap-5">
         <h1 className="text-center text-[1.5rem] sm:text-[2rem] font-medium tracking-tight leading-none">
           Invite New Member

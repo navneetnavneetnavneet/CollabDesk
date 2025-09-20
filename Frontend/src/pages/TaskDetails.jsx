@@ -2,12 +2,13 @@ import React from "react";
 import Project from "../components/Project";
 import Loading from "../pages/Loading";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { asyncGetTaskDetails } from "../store/actions/taskActions";
 import { setTask } from "../store/reducers/taskSlice";
 
 const TaskDetails = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { taskId } = useParams();
 
@@ -43,6 +44,23 @@ const TaskDetails = () => {
           <h3 className="text-base font-normal tracking-tight">
             Deadline : {new Date(task.deadline).toLocaleDateString()}
           </h3>
+        </div>
+        <div className="flex items-center gap-5">
+          <button
+            onClick={() => navigate(`/update-task-deatils/${task._id}`)}
+            className="w-fit px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
+          >
+            Update Task
+          </button>
+          <button
+            onClick={async () => {
+              // await dispatch(asyncDeleteProject(project._id));
+              // await navigate("/projects");
+            }}
+            className="w-fit px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
+          >
+            Delete Task
+          </button>
         </div>
       </div>
       <div className="flex flex-col gap-2">
