@@ -37,3 +37,35 @@ export const asyncGetTaskDetails = (taskId) => async (dispatch, getState) => {
     console.log(error.response.data);
   }
 };
+
+export const asyncUpdateTask =
+  (taskId, { title, description, deadline, status }) =>
+  async (dispatch, getState) => {
+    try {
+      const { data } = await axios.put(`/task/update/${taskId}`, {
+        title,
+        description,
+        status,
+        deadline,
+      });
+
+      if (data) {
+        await dispatch(asyncFetchAllTasks());
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+export const asyncDeleteTask = (taskId) => async (dispatch, getState) => {
+  try {
+    const { data, status } = await axios.delete(`/task/delete/${taskId}`);
+
+    if (data && status) {
+      await dispatch(asyncFetchAllTasks());
+      await dispatch(setTask(null));
+    }
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};

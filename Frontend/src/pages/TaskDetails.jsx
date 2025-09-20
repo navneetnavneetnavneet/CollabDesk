@@ -4,7 +4,10 @@ import Loading from "../pages/Loading";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { asyncGetTaskDetails } from "../store/actions/taskActions";
+import {
+  asyncDeleteTask,
+  asyncGetTaskDetails,
+} from "../store/actions/taskActions";
 import { setTask } from "../store/reducers/taskSlice";
 
 const TaskDetails = () => {
@@ -21,8 +24,6 @@ const TaskDetails = () => {
   }, [taskId]);
 
   const { task } = useSelector((state) => state.taskReducer);
-
-  console.log(task);
 
   return task ? (
     <div className="w-full h-full px-4 sm:px-10 py-3 sm:py-10 flex flex-col gap-10 overflow-y-auto">
@@ -54,8 +55,8 @@ const TaskDetails = () => {
           </button>
           <button
             onClick={async () => {
-              // await dispatch(asyncDeleteProject(project._id));
-              // await navigate("/projects");
+              await dispatch(asyncDeleteTask(task._id));
+              await navigate("/tasks");
             }}
             className="w-fit px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
           >

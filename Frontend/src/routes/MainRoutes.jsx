@@ -21,6 +21,7 @@ import InviteMember from "../components/InviteMember";
 import JoinMember from "../components/JoinMember";
 import { setAllUser } from "../store/reducers/userSlice";
 import UpdateProjectDetails from "../pages/UpdateProjectDetails";
+import UpdateTaskDetails from "../pages/UpdateTaskDetails";
 
 const MainRoutes = () => {
   const navigate = useNavigate();
@@ -62,6 +63,10 @@ const MainRoutes = () => {
         <Route
           path="/update-project-deatils/:projectId"
           element={<UpdateProjectDetails />}
+        />
+        <Route
+          path="/update-task-deatils/:taskId"
+          element={<UpdateTaskDetails />}
         />
         <Route path="/task/details/:taskId" element={<TaskDetails />} />
         <Route path="/tasks" element={<Tasks />} />
