@@ -105,7 +105,7 @@ module.exports.getProjectTasks = catchAsyncError(async (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ message: errors.array() });
   }
-  
+
   const user = req.user;
   const { projectId } = req.params;
 
@@ -114,6 +114,23 @@ module.exports.getProjectTasks = catchAsyncError(async (req, res, next) => {
     .populate("createdBy")
     .populate("project")
     .populate("assignee");
+
+  res.status(200).json(tasks);
+});
+
+module.exports.getMyTasks = catchAsyncError(async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+
+  const tasks = await taskModel
+    .find({
+      $or: [{ createdBy: req.user._id }, { assignee: req.user._id }],
+    })
+    .populate("createdBy")
+    .populate("assignee")
+    .populate("project");
 
   res.status(200).json(tasks);
 });

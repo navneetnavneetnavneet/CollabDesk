@@ -28,6 +28,8 @@ router.get(
   taskController.getTaskDetails
 );
 
+router.get("/my", authUser.isAuthenticated, taskController.getMyTasks);
+
 router.get(
   "/:projectId",
   authUser.isAuthenticated,
