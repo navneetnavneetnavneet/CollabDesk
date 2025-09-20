@@ -24,19 +24,16 @@ const TaskDetails = () => {
   }, [taskId]);
 
   const { task } = useSelector((state) => state.taskReducer);
+  const { user } = useSelector((state) => state.userReducer);
 
-  return task ? (
-    <div className="w-full h-full px-4 sm:px-10 py-3 sm:py-10 flex flex-col gap-10 overflow-y-auto">
+  return user && task ? (
+    <div className="w-full h-full px-4 sm:px-10 py-5 sm:py-10 flex flex-col gap-10 overflow-y-auto">
       <div className="flex flex-col gap-3">
         <h1 className="text-[1.5rem] sm:text-[2rem] font-medium tracking-tight leading-none">
           {task.title}
         </h1>
         <p className="text-base font-normal tracking-tight opacity-80 leading-tight">
           {task.description}
-          <br />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-          voluptates natus laborum aspernatur labore dolor nesciunt mollitia ea,
-          id placeat!
         </p>
         <div className="flex flex-col">
           <h3 className="text-base font-normal tracking-tight">
@@ -46,23 +43,25 @@ const TaskDetails = () => {
             Deadline : {new Date(task.deadline).toLocaleDateString()}
           </h3>
         </div>
-        <div className="flex items-center gap-5">
-          <button
-            onClick={() => navigate(`/update-task-deatils/${task._id}`)}
-            className="w-fit px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
-          >
-            Update Task
-          </button>
-          <button
-            onClick={async () => {
-              await dispatch(asyncDeleteTask(task._id));
-              await navigate("/tasks");
-            }}
-            className="w-fit px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
-          >
-            Delete Task
-          </button>
-        </div>
+        {(user.role === "admin" || user.role === "manager") && (
+          <div className="flex items-center gap-5">
+            <button
+              onClick={() => navigate(`/update-task-deatils/${task._id}`)}
+              className="w-fit px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
+            >
+              Update Task
+            </button>
+            <button
+              onClick={async () => {
+                await dispatch(asyncDeleteTask(task._id));
+                await navigate("/tasks");
+              }}
+              className="w-fit px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 hover:scale-[.99] duration-300 cursor-pointer tracking-tight"
+            >
+              Delete Task
+            </button>
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-xl font-normal tracking-tight leading-none">
@@ -89,7 +88,7 @@ const TaskDetails = () => {
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-xl font-normal tracking-tight leading-none">
-          Team
+          Project
         </h3>
         <div className="w-full flex flex-wrap gap-5">
           <Project project={task.project} />

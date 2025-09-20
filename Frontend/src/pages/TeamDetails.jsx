@@ -38,7 +38,7 @@ const TeamDetails = () => {
   };
 
   return user && team ? (
-    <div className="w-full h-full px-4 sm:px-10 py-3 sm:py-10 overflow-y-auto">
+    <div className="w-full h-full px-4 sm:px-10 py-5 sm:py-10 overflow-y-auto">
       <div className="flex items-center justify-between">
         <h1 className="text-[1.5rem] sm:text-[2rem] font-medium tracking-tight leading-none">
           {team.name}
@@ -62,23 +62,15 @@ const TeamDetails = () => {
       <div className="pt-5 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <h1 className="text-xl tracking-tight">Members</h1>
-          <button
-            onClick={() => navigate("/teams/invite")}
-            className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 cursor-pointer"
-          >
-            Invite New Member
-          </button>
+          {(user.role === "admin" || user.role === "manager") && (
+            <button
+              onClick={() => navigate("/teams/invite")}
+              className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 cursor-pointer"
+            >
+              Invite New Member
+            </button>
+          )}
         </div>
-        {/* {(user.role === "admin" || user.role === "manager") && (
-          <div className="flex items-center justify-between sm:justify-start gap-5">
-            <button className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 cursor-pointer">
-              Add New Member
-            </button>
-            <button className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 cursor-pointer">
-              Remove Member
-            </button>
-          </div>
-        )} */}
         <div className="flex gap-6 flex-wrap">
           {team.members.length > 0 ? (
             team.members.map((member) => (

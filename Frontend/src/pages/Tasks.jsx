@@ -24,8 +24,8 @@ const Tasks = () => {
 
   return user && tasks ? (
     <div className="relative w-full overflow-x-hidden overflow-y-auto">
-      <div className="sm:sticky top-0 left-0 z-[99] bg-zinc-900 w-full px-4 sm:px-10 py-3 sm:border-b border-zinc-800 flex items-center justify-between">
-        <h1 className="text-[1.5rem] font-medium tracking-tight leading-none">
+      <div className="sm:sticky top-0 left-0 z-[99] bg-zinc-900 w-full px-4 sm:px-10 h-[10vh] sm:border-b border-zinc-800 flex items-center justify-between">
+        <h1 className="text-[1.5rem] sm:text-[2rem] font-medium tracking-tight leading-none">
           Tasks
         </h1>
       </div>
@@ -34,7 +34,7 @@ const Tasks = () => {
           tasks.map((task) => <Task key={task._id} task={task} />)
         ) : (
           <h3 className="w-full text-center text-xs tracking-tight opacity-60">
-            No task here.
+            No tasks here.
           </h3>
         )}
       </div>
