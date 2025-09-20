@@ -72,7 +72,7 @@ const MainRoutes = () => {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/create-new-team" element={<CreateNewTeam />} />
         <Route path="/create-new-project" element={<CreateNewProject />} />
-        <Route path="/create-new-task" element={<CreateNewTask />} />
+        <Route path="/:projectId/create-new-task" element={<CreateNewTask />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
       </Route>

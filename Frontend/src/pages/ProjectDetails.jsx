@@ -64,6 +64,7 @@ const ProjectDetails = () => {
     };
   }, [projectId, dispatch]);
 
+  const { user } = useSelector((state) => state.userReducer);
   const { project } = useSelector((state) => state.projectReducer);
   const { projectTasks } = useSelector((state) => state.taskReducer);
 
@@ -81,7 +82,7 @@ const ProjectDetails = () => {
     }
   };
 
-  return project ? (
+  return user && project ? (
     <div className="w-full h-full px-4 sm:px-10 py-3 sm:py-10 flex flex-col gap-10 overflow-y-auto">
       <div className="flex flex-col gap-3">
         <h1 className="text-[1.5rem] sm:text-[2rem] font-medium tracking-tight leading-none">
@@ -240,9 +241,19 @@ const ProjectDetails = () => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="text-xl font-normal tracking-tight leading-none">
-          Tasks
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl font-normal tracking-tight leading-none">
+            Tasks
+          </h3>
+          {(user.role === "admin" || user.role === "manager") && (
+            <button
+              onClick={() => navigate(`/${project._id}/create-new-task`)}
+              className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 hover:scale-[.99] cursor-pointer"
+            >
+              Add New Task
+            </button>
+          )}
+        </div>
         <div className="w-full flex flex-wrap gap-5">
           {projectTasks?.length > 0 ? (
             projectTasks?.map((task) => <Task key={task._id} task={task} />)

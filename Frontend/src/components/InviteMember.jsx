@@ -59,8 +59,8 @@ const InviteMember = () => {
 
   return (
     <div className="w-full h-full py-4 sm:py-10 z-[9] bg-zinc-900 absolute top-0 left-0">
-      <div className="w-full md:w-2/3 lg:w-1/2 mx-auto px-4 sm:px-10 flex flex-col gap-5">
-        <h1 className="text-center text-[1.5rem] sm:text-[2rem] font-medium tracking-tight leading-none">
+      <div className="w-full sm:pt-10 md:w-2/3 lg:w-1/2 mx-auto px-4 sm:px-10 flex flex-col gap-5">
+        <h1 className="text-[1.5rem] sm:text-[2rem] font-normal tracking-tight text-center opacity-80">
           Invite New Member
         </h1>
         <div className="w-full flex items-center gap-2 px-2 py-2 rounded-md outline-none border border-zinc-800">
@@ -85,7 +85,13 @@ const InviteMember = () => {
                   className="w-full px-2 py-2 rounded-md hover:bg-zinc-800 duration-300 flex items-center justify-between cursor-pointer"
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-10 sm:w-14 h-10 sm:h-14 flex-shrink-0 rounded-full border border-zinc-800"></div>
+                    <div className="w-10 sm:w-14 h-10 sm:h-14 flex-shrink-0 rounded-full border border-zinc-800 overflow-hidden">
+                      <img
+                        className="w-full h-full object-cover"
+                        src={user.profileImage.url}
+                        alt=""
+                      />
+                    </div>
                     <h3 className="text-[1rem] md:text-[1.25rem] font-normal tracking-tight leading-none">
                       {`${user.fullName.firstName} ${user.fullName.lastName}`}
                     </h3>

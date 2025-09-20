@@ -32,9 +32,10 @@ const CreateNewTeam = () => {
   return (
     <div className="w-full h-full">
       <div className="w-full md:w-2/3 lg:w-1/2 mx-auto px-4 sm:px-10 flex flex-col gap-5 pt-10 md:pt-20">
-        <h1 className="text-[1.5rem] sm:text-[2rem] font-medium tracking-tight text-center">
-          Create New Team
+        <h1 className="text-[1.5rem] sm:text-[2rem] font-normal tracking-tight opacity-80 text-center">
+          Project New Team
         </h1>
+        <div className="-mt-4 w-full h-[1px] bg-zinc-800"></div>
         <form
           onSubmit={submitHandler}
           className="w-full flex flex-col gap-3 tracking-tight"

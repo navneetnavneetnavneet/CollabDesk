@@ -38,6 +38,26 @@ export const asyncGetTaskDetails = (taskId) => async (dispatch, getState) => {
   }
 };
 
+export const asyncCreateTask =
+  ({ title, description, deadline, status, project }) =>
+  async (dispatch, getState) => {
+    try {
+      const { data } = await axios.post("/task/create", {
+        title,
+        description,
+        deadline,
+        status,
+        project,
+      });
+
+      if (data) {
+        await dispatch(asyncFetchAllTasks());
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
 export const asyncUpdateTask =
   (taskId, { title, description, deadline, status }) =>
   async (dispatch, getState) => {

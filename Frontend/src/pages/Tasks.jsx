@@ -28,14 +28,6 @@ const Tasks = () => {
         <h1 className="text-[1.5rem] font-medium tracking-tight leading-none">
           Tasks
         </h1>
-        {(user.role === "admin" || user.role === "manager") && (
-          <button
-            onClick={() => navigate("/create-new-task")}
-            className="px-4 py-2 rounded-md border border-zinc-800 hover:bg-zinc-800 duration-300 hover:scale-[.99] cursor-pointer"
-          >
-            Add New Task
-          </button>
-        )}
       </div>
       <div className="w-full px-4 sm:px-10 py-5 flex flex-wrap gap-5 lg:gap-8 justify-start">
         {tasks.length > 0 ? (
